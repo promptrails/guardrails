@@ -1,0 +1,8 @@
+*.exe
+*.test
+*.out
+*.prof
+coverage.out
+coverage.html
+.idea/
+.vscode/
