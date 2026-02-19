@@ -51,7 +51,22 @@ type Guard struct {
 // Option configures the guard.
 type Option func(*Guard)
 
+// WithScanner adds a scanner with the specified action.
+func WithScanner(s Scanner, action Action) Option {
+	return func(g *Guard) {
+		g.addScanner(s, action)
+	}
+}
+
 // New creates a new Guard with the given scanner options.
+//
+// Example:
+//
+//	guard := guardrails.New(
+//		guardrails.WithScanner(scanners.NewPII(), guardrails.ActionRedact),
+//		guardrails.WithScanner(scanners.NewToxicity(), guardrails.ActionBlock),
+//		guardrails.WithScanner(scanners.NewPromptInjection(), guardrails.ActionBlock),
+//	)
 func New(opts ...Option) *Guard {
 	g := &Guard{}
 	for _, opt := range opts {

@@ -7,18 +7,13 @@
 // # Quick Start
 //
 //	guard := guardrails.New(
-//		guardrails.WithPII(),
-//		guardrails.WithToxicity(),
-//		guardrails.WithBanSubstrings("password", "secret"),
+//		guardrails.WithScanner(scanners.NewPII(), guardrails.ActionRedact),
+//		guardrails.WithScanner(scanners.NewToxicity(), guardrails.ActionBlock),
+//		guardrails.WithScanner(scanners.NewPromptInjection(), guardrails.ActionBlock),
 //	)
 //
 //	result := guard.Scan(ctx, "My email is alice@example.com")
 //	if !result.Passed {
 //		fmt.Println("Blocked:", result.Reason())
 //	}
-//
-// # Redaction
-//
-//	redacted := guard.Redact(ctx, "Call me at 555-123-4567")
-//	// redacted: "Call me at [PHONE_REDACTED]"
 package guardrails
