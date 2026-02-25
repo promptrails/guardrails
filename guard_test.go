@@ -23,7 +23,7 @@ func (s *redactingScanner) Type() ScannerType { return "test_redact" }
 func (s *redactingScanner) Scan(_ context.Context, _ string) *Result {
 	return &Result{Passed: false, Message: "needs redaction"}
 }
-func (s *redactingScanner) Redact(_ context.Context, content string) string {
+func (s *redactingScanner) Redact(_ context.Context, _ string) string {
 	return "[REDACTED]"
 }
 

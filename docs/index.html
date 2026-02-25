@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guardrails — Content Safety for Go LLM Apps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" />
+  <style>
+    :root {
+      --theme-color: oklch(0.49 0.13 247);
+      --primary: oklch(0.49 0.13 247);
+      --primary-10: oklch(0.49 0.13 247 / 0.1);
+      --base-background-color: oklch(0.985 0.004 240);
+      --bg-secondary: oklch(0.97 0.005 245);
+      --border-color: oklch(0.9 0.008 248);
+      --base-color: oklch(0.19 0.012 248);
+      --text-secondary: oklch(0.55 0.015 248);
+      --code-bg: oklch(0.16 0.014 248);
+      --code-text: oklch(0.9 0.005 248);
+      --sidebar-width: 260px;
+      --sidebar-background: oklch(0.975 0.004 240 / 0.85);
+      --sidebar-border-color: oklch(0.9 0.008 248);
+      --sidebar-nav-link-color--active: oklch(0.49 0.13 247);
+      --sidebar-name-font-weight: 800;
+      --sidebar-name-font-size: 17px;
+      --content-max-width: 860px;
+      --heading-color: oklch(0.19 0.012 248);
+      --link-color: oklch(0.49 0.13 247);
+    }
+    [data-theme="dark"] {
+      --primary: oklch(0.69 0.14 246);
+      --primary-10: oklch(0.69 0.14 246 / 0.1);
+      --theme-color: oklch(0.69 0.14 246);
+      --base-background-color: oklch(0.135 0.015 248);
+      --bg-secondary: oklch(0.17 0.016 248);
+      --border-color: oklch(0.28 0.018 248);
+      --base-color: oklch(0.94 0.005 248);
+      --text-secondary: oklch(0.6 0.012 248);
+      --code-bg: oklch(0.1 0.012 248);
+      --sidebar-background: oklch(0.15 0.015 248 / 0.9);
+      --sidebar-border-color: oklch(0.28 0.018 248);
+      --sidebar-nav-link-color--active: oklch(0.69 0.14 246);
+      --sidebar-name-color: oklch(0.94 0.005 248);
+      --heading-color: oklch(0.94 0.005 248);
+      --link-color: oklch(0.69 0.14 246);
+    }
+    body, .sidebar, .markdown-section {
+      font-family: 'Geist', -apple-system, sans-serif !important;
+    }
+    code, pre, .token, .markdown-section code {
+      font-family: 'Geist Mono', monospace !important;
+    }
+    .sidebar { backdrop-filter: blur(16px); }
+    .markdown-section h1, .markdown-section h2, .markdown-section h3 { letter-spacing: -0.03em; }
+    .markdown-section h1 { font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+    .markdown-section pre { background: var(--code-bg) !important; border-radius: 12px !important; border: 1px solid var(--border-color); padding: 0 !important; }
+    .markdown-section pre > code { background: none !important; padding: 20px !important; display: block; font-size: 13px !important; line-height: 1.7 !important; color: var(--code-text) !important; }
+    .markdown-section p code, .markdown-section li code, .markdown-section td code { background: var(--primary-10) !important; color: var(--primary) !important; padding: 2px 7px !important; border-radius: 6px !important; font-size: 0.85em !important; border: none !important; }
+    .markdown-section table { border-collapse: separate !important; border: 1px solid var(--border-color) !important; border-radius: 12px !important; overflow: hidden !important; background: var(--base-background-color) !important; }
+    .markdown-section th { background: var(--bg-secondary) !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.04em !important; color: var(--text-secondary) !important; }
+    .markdown-section td, .markdown-section tr, .markdown-section tr:nth-child(2n), .markdown-section tbody { background: var(--base-background-color) !important; color: var(--base-color) !important; }
+    .token.keyword { color: oklch(0.75 0.15 305) !important; }
+    .token.string { color: oklch(0.75 0.15 155) !important; }
+    .token.comment { color: oklch(0.5 0.01 248) !important; }
+    .token.function { color: oklch(0.78 0.1 230) !important; }
+    .theme-toggle { position: fixed; bottom: 20px; left: 20px; z-index: 100; width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--base-background-color); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+    .theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Guardrails',
+      repo: 'https://github.com/promptrails/guardrails',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      search: { placeholder: 'Search docs...', noData: 'No results' },
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <script>
+    function getPreferredTheme() { const s = localStorage.getItem('guardrails-theme'); return s || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+    function setTheme(t) { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('guardrails-theme', t); }
+    function toggleTheme() { setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+    setTheme(getPreferredTheme());
+  </script>
+</body>
+</html>
