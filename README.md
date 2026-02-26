@@ -1,4 +1,4 @@
-# guardrails
+# GuardRails
 
 Lightweight content safety scanning for Go LLM applications.
 
