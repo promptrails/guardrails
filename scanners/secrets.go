@@ -24,7 +24,7 @@ var secretPatterns = map[string]*regexp.Regexp{
 	"connection_string": regexp.MustCompile(`(?i)(postgres|mysql|mongodb)://[^\s]+`),
 }
 
-var secretRedactLabels = map[string]string{
+var secretRedactLabels = map[string]string{ // #nosec G101 -- redaction labels, not credentials
 	"aws_access_key":    "[AWS_KEY_REDACTED]",
 	"aws_secret_key":    "[AWS_SECRET_REDACTED]",
 	"github_token":      "[GITHUB_TOKEN_REDACTED]",

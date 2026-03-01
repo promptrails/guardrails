@@ -26,7 +26,7 @@ var piiPatterns = map[string]*regexp.Regexp{
 	"ip_address":  ipAddressRegex,
 }
 
-var piiRedactLabels = map[string]string{
+var piiRedactLabels = map[string]string{ // #nosec G101 -- redaction labels, not credentials
 	"email":       "[EMAIL_REDACTED]",
 	"phone":       "[PHONE_REDACTED]",
 	"ssn":         "[SSN_REDACTED]",
