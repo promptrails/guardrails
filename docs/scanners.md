@@ -102,6 +102,120 @@ s := scanners.NewSecrets()
 
 **Implements**: `Scanner`, `Redactor`
 
+## InvisibleText
+
+Detects hidden Unicode characters (format chars, private use) commonly used for prompt injection attacks.
+
+```go
+s := scanners.NewInvisibleText()
+```
+
+**Implements**: `Scanner`, `Redactor` (strips invisible characters)
+
+## NoRefusal
+
+Detects when an LLM refuses to answer using 25 known refusal phrases.
+
+```go
+s := scanners.NewNoRefusal()
+
+// Custom phrases
+s := scanners.NewNoRefusalWithPhrases("no can do", "not possible")
+```
+
+**Default phrases**: "i'm sorry", "i cannot", "as an ai", "against my guidelines", etc.
+
+**Implements**: `Scanner`
+
+## TokenLimit
+
+Enforces a maximum word count on content.
+
+```go
+s := scanners.NewTokenLimit(500) // max 500 words
+```
+
+**Implements**: `Scanner`
+
+## ReadingTime
+
+Enforces a maximum reading time (200 words per minute).
+
+```go
+s := scanners.NewReadingTime(120) // max 2 minutes
+```
+
+**Implements**: `Scanner`
+
+## JSONValidator
+
+Validates JSON structure in content. Optionally checks for required keys.
+
+```go
+s := scanners.NewJSONValidator()
+
+// With required keys
+s := scanners.NewJSONValidatorWithKeys("name", "email", "age")
+```
+
+**Implements**: `Scanner`
+
+## URLReachability
+
+Checks that URLs in content are reachable via HTTP HEAD. Useful for detecting hallucinated URLs.
+
+```go
+s := scanners.NewURLReachability()
+
+// Custom timeout per URL
+s := scanners.NewURLReachabilityWithTimeout(3 * time.Second)
+```
+
+**Implements**: `Scanner`
+
+## BanCode
+
+Detects code snippets using heuristic patterns for 10+ languages.
+
+```go
+s := scanners.NewBanCode()
+
+// With extra patterns
+s := scanners.NewBanCodeWithPatterns(regexp.MustCompile(`(?m)^SELECT .+ FROM`))
+```
+
+**Detects**: Markdown code fences, Python, JavaScript/TS, Go, Java/C#, C/C++, SQL, PHP, shebang lines, framework decorators.
+
+**Implements**: `Scanner`
+
+## MaliciousURL
+
+Detects potentially malicious URLs using heuristics.
+
+```go
+s := scanners.NewMaliciousURL()
+
+// With domain blocklist
+s := scanners.NewMaliciousURLWithBlocklist("evil.com", "phishing.org")
+```
+
+**Checks**: Suspicious TLDs (.tk, .ml, .xyz), IP-based hosts, excessive subdomains, phishing keywords in path.
+
+**Implements**: `Scanner`
+
+## Sentiment
+
+Analyzes text sentiment using a VADER-inspired lexicon approach.
+
+```go
+s := scanners.NewSentiment() // threshold: -0.5
+
+// Custom threshold (lower = more tolerant)
+s := scanners.NewSentimentWithThreshold(-1.0)
+```
+
+**Implements**: `Scanner`
+
 ## Composing Scanners
 
 ```go

@@ -34,6 +34,15 @@ go get github.com/promptrails/guardrails
 | **BanSubstrings** | Custom banned words/phrases | Yes |
 | **PromptInjection** | Override instructions, jailbreaks, role hijacking | No |
 | **Secrets** | API keys, tokens, private keys, connection strings | Yes |
+| **InvisibleText** | Hidden Unicode characters (prompt injection) | Yes |
+| **NoRefusal** | LLM refusal phrases ("I'm sorry", "As an AI") | No |
+| **TokenLimit** | Max word count enforcement | No |
+| **ReadingTime** | Max reading time in seconds | No |
+| **JSONValidator** | JSON structure + required keys | No |
+| **URLReachability** | Hallucinated/unreachable URLs | No |
+| **BanCode** | Code snippets (10 language patterns) | No |
+| **MaliciousURL** | Suspicious TLDs, IP hosts, phishing keywords | No |
+| **Sentiment** | Negative sentiment (lexicon-based) | No |
 
 ## Actions
 
