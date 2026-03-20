@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"testing"
 )
 
@@ -307,5 +308,200 @@ func TestSentiment_Empty(t *testing.T) {
 	result := s.Scan(context.Background(), "")
 	if !result.Passed {
 		t.Error("expected empty text to pass")
+	}
+}
+
+func TestSentiment_Intensifiers(t *testing.T) {
+	s := NewSentiment()
+	result := s.Scan(context.Background(), "This is extremely terrible and absolutely horrible.")
+	if result.Passed {
+		t.Error("expected intensified negative to fail")
+	}
+}
+
+func TestSentiment_NoSentimentWords(t *testing.T) {
+	s := NewSentiment()
+	result := s.Scan(context.Background(), "table chair window door")
+	if !result.Passed {
+		t.Error("expected text with no sentiment words to pass")
+	}
+}
+
+// === BanCode Additional Tests ===
+
+func TestBanCode_CustomPattern(t *testing.T) {
+	s := NewBanCodeWithPatterns(regexp.MustCompile(`(?m)^CUSTOM_PATTERN`))
+	result := s.Scan(context.Background(), "CUSTOM_PATTERN detected here")
+	if result.Passed {
+		t.Error("expected custom pattern detection")
+	}
+}
+
+func TestBanCode_SQLDetection(t *testing.T) {
+	s := NewBanCode()
+	result := s.Scan(context.Background(), "SELECT * FROM users WHERE id = 1")
+	if result.Passed {
+		t.Error("expected SQL detection")
+	}
+}
+
+func TestBanCode_ShebangDetection(t *testing.T) {
+	s := NewBanCode()
+	result := s.Scan(context.Background(), "#!/bin/bash\necho hello")
+	if result.Passed {
+		t.Error("expected shebang detection")
+	}
+}
+
+// === MaliciousURL Additional Tests ===
+
+func TestMaliciousURL_ExcessiveSubdomains(t *testing.T) {
+	s := NewMaliciousURL()
+	result := s.Scan(context.Background(), "Visit https://a.b.c.d.e.example.com/page")
+	if result.Passed {
+		t.Error("expected excessive subdomain detection")
+	}
+}
+
+func TestMaliciousURL_MalformedURL(t *testing.T) {
+	s := NewMaliciousURL()
+	// URL regex won't match truly malformed URLs, so this should pass
+	result := s.Scan(context.Background(), "not a url at all")
+	if !result.Passed {
+		t.Error("expected non-URL text to pass")
+	}
+}
+
+// === JSONValidator Additional Tests ===
+
+func TestJSONValidator_RequiredKeysOnArray(t *testing.T) {
+	s := NewJSONValidatorWithKeys("name")
+	result := s.Scan(context.Background(), `[1, 2, 3]`)
+	if result.Passed {
+		t.Error("expected array with required keys to fail")
+	}
+}
+
+func TestJSONValidator_EmptyObject(t *testing.T) {
+	s := NewJSONValidator()
+	result := s.Scan(context.Background(), `{}`)
+	if !result.Passed {
+		t.Error("expected empty object to pass")
+	}
+}
+
+// === URLReachability Additional Tests ===
+
+func TestURLReachability_ServerError(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}))
+	defer server.Close()
+
+	s := NewURLReachability()
+	result := s.Scan(context.Background(), "Check "+server.URL+"/error")
+	if result.Passed {
+		t.Error("expected 500 error URL to fail")
+	}
+}
+
+// === InvisibleText Additional Tests ===
+
+func TestInvisibleText_MultipleInvisible(t *testing.T) {
+	s := NewInvisibleText()
+	// Zero-width space + zero-width non-joiner
+	result := s.Scan(context.Background(), "a\u200b\u200cb")
+	if result.Passed {
+		t.Error("expected multiple invisible chars detection")
+	}
+	if len(result.Matches) < 2 {
+		t.Errorf("expected at least 2 matches, got %d", len(result.Matches))
+	}
+}
+
+func TestInvisibleText_Type(t *testing.T) {
+	s := NewInvisibleText()
+	if s.Type() != "invisible_text" {
+		t.Errorf("expected type 'invisible_text', got %q", s.Type())
+	}
+}
+
+// === NoRefusal Additional Tests ===
+
+func TestNoRefusal_Type(t *testing.T) {
+	s := NewNoRefusal()
+	if s.Type() != "no_refusal" {
+		t.Errorf("expected type 'no_refusal', got %q", s.Type())
+	}
+}
+
+// === TokenLimit Additional Tests ===
+
+func TestTokenLimit_ExactLimit(t *testing.T) {
+	s := NewTokenLimit(3)
+	result := s.Scan(context.Background(), "one two three")
+	if !result.Passed {
+		t.Error("expected exactly 3 words to pass with limit 3")
+	}
+}
+
+func TestTokenLimit_Type(t *testing.T) {
+	s := NewTokenLimit(10)
+	if s.Type() != "token_limit" {
+		t.Errorf("expected type 'token_limit', got %q", s.Type())
+	}
+}
+
+// === ReadingTime Additional Tests ===
+
+func TestReadingTime_Type(t *testing.T) {
+	s := NewReadingTime(60)
+	if s.Type() != "reading_time" {
+		t.Errorf("expected type 'reading_time', got %q", s.Type())
+	}
+}
+
+// === JSONValidator Additional Tests ===
+
+func TestJSONValidator_Type(t *testing.T) {
+	s := NewJSONValidator()
+	if s.Type() != "json_validator" {
+		t.Errorf("expected type 'json_validator', got %q", s.Type())
+	}
+}
+
+// === BanCode Additional Tests ===
+
+func TestBanCode_Type(t *testing.T) {
+	s := NewBanCode()
+	if s.Type() != "ban_code" {
+		t.Errorf("expected type 'ban_code', got %q", s.Type())
+	}
+}
+
+// === MaliciousURL Additional Tests ===
+
+func TestMaliciousURL_Type(t *testing.T) {
+	s := NewMaliciousURL()
+	if s.Type() != "malicious_url" {
+		t.Errorf("expected type 'malicious_url', got %q", s.Type())
+	}
+}
+
+// === Sentiment Additional Tests ===
+
+func TestSentiment_Type(t *testing.T) {
+	s := NewSentiment()
+	if s.Type() != "sentiment" {
+		t.Errorf("expected type 'sentiment', got %q", s.Type())
+	}
+}
+
+// === URLReachability Additional Tests ===
+
+func TestURLReachability_Type(t *testing.T) {
+	s := NewURLReachability()
+	if s.Type() != "url_reachability" {
+		t.Errorf("expected type 'url_reachability', got %q", s.Type())
 	}
 }
