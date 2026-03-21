@@ -71,3 +71,11 @@ For ML-powered scanning with higher accuracy (transformer-based toxicity detecti
 ## License
 
 MIT — [PromptRails](https://promptrails.com)
+
+## Part of the PromptRails AI Toolkit
+
+- [LangRails](https://github.com/promptrails/langrails) — Unified LLM provider
+- **GuardRails** — Content safety scanning
+- [MemoryRails](https://github.com/promptrails/memoryrails) — Agent memory
+- [MediaRails](https://github.com/promptrails/mediarails) — AI media generation
+- [Go AI Toolkit](https://github.com/promptrails/go-ai-toolkit) — Demo app
