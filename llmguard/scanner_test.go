@@ -24,7 +24,7 @@ func TestScanner_Scan(t *testing.T) {
 				IsValid:  true,
 				Scanners: map[string]float64{"Toxicity": 0.1},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -46,7 +46,7 @@ func TestScanner_Scan(t *testing.T) {
 				IsValid:  false,
 				Scanners: map[string]float64{"Toxicity": 0.85},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -68,7 +68,7 @@ func TestScanner_Scan(t *testing.T) {
 				IsValid:  true,
 				Scanners: map[string]float64{"Toxicity": 0.3},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -87,7 +87,7 @@ func TestScanner_Scan(t *testing.T) {
 				IsValid:  true,
 				Scanners: map[string]float64{"OtherScanner": 0.1},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -122,7 +122,7 @@ func TestScanner_Redact(t *testing.T) {
 				IsValid:         true,
 				Scanners:        map[string]float64{"Anonymize": 0.8},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 

@@ -38,7 +38,7 @@ func TestClient_ScanPrompt(t *testing.T) {
 				},
 			}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -83,7 +83,7 @@ func TestClient_ScanPrompt(t *testing.T) {
 			}
 
 			resp := apiResponse{IsValid: true, Scanners: map[string]float64{}}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -102,7 +102,7 @@ func TestClient_ScanPrompt(t *testing.T) {
 			}
 
 			resp := apiResponse{IsValid: true, Scanners: map[string]float64{}}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -116,7 +116,7 @@ func TestClient_ScanPrompt(t *testing.T) {
 	t.Run("returns error on non-200 status", func(t *testing.T) {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("internal error"))
+			_, _ = w.Write([]byte("internal error"))
 		}))
 		defer server.Close()
 
@@ -137,7 +137,7 @@ func TestClient_ScanPrompt(t *testing.T) {
 
 	t.Run("returns error on invalid JSON response", func(t *testing.T) {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-			w.Write([]byte("not json"))
+			_, _ = w.Write([]byte("not json"))
 		}))
 		defer server.Close()
 
@@ -154,7 +154,7 @@ func TestClient_ScanPrompt(t *testing.T) {
 				IsValid:  false,
 				Scanners: map[string]float64{"Toxicity": 0.9},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -198,7 +198,7 @@ func TestClient_ScanOutput(t *testing.T) {
 				IsValid:         true,
 				Scanners:        map[string]float64{"Bias": 0.2},
 			}
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
