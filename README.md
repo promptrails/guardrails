@@ -52,21 +52,33 @@ go get github.com/promptrails/guardrails
 | `ActionRedact` | Replace matches with labels, continue |
 | `ActionLog` | Record violation, continue unchanged |
 
+## LLM Guard Integration
+
+For ML-powered scanning, the `llmguard` sub-package connects to [LLM Guard](https://llm-guard.com):
+
+```go
+import "github.com/promptrails/guardrails/llmguard"
+
+client := llmguard.NewClient("http://localhost:8000", "")
+
+guard := guardrails.New(
+    guardrails.WithScanner(
+        llmguard.NewScanner(client, "Toxicity", guardrails.ScannerToxicity),
+        guardrails.ActionBlock,
+    ),
+)
+```
+
 ## Documentation
 
 | | |
 |---|---|
 | [Getting Started](docs/getting-started.md) | Installation and quick start |
 | [Scanners](docs/scanners.md) | All scanners with config options |
+| [LLM Guard](docs/llm-guard.md) | ML-powered scanning via LLM Guard API |
 | [Custom Scanners](docs/custom-scanners.md) | Build your own scanner |
 
 Full docs: [promptrails.github.io/guardrails](https://promptrails.github.io/guardrails)
-
-## Scope
-
-This library provides fast, local, regex-based content scanning with zero dependencies. It's designed for common safety checks in Go LLM applications.
-
-For ML-powered scanning with higher accuracy (transformer-based toxicity detection, NER-based PII, etc.), see [LLM Guard](https://github.com/protectai/llm-guard) (Python).
 
 ## License
 

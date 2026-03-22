@@ -1,0 +1,10 @@
+services:
+  llm-guard:
+    image: laiyer/llm-guard-api:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_PORT=8000
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./scanners.yml:/home/user/app/config/scanners.yml

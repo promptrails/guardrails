@@ -1,3 +1,4 @@
 - [Getting Started](getting-started.md)
 - [Scanners](scanners.md)
+- [LLM Guard](llm-guard.md)
 - [Custom Scanners](custom-scanners.md)

@@ -1,0 +1,19 @@
+input_scanners:
+  - type: Toxicity
+  - type: Anonymize
+  - type: PromptInjection
+  - type: BanTopics
+    params:
+      topics: ["violence", "drugs"]
+  - type: Secrets
+  - type: InvisibleText
+
+output_scanners:
+  - type: Toxicity
+  - type: Bias
+  - type: MaliciousURLs
+  - type: NoRefusal
+  - type: Sensitive
+  - type: Language
+    params:
+      valid_languages: ["en"]
