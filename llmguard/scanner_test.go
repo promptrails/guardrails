@@ -19,7 +19,7 @@ func TestScanner_Type(t *testing.T) {
 
 func TestScanner_Scan(t *testing.T) {
 	t.Run("passes when risk score is below default threshold", func(t *testing.T) {
-		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			resp := apiResponse{
 				IsValid:  true,
 				Scanners: map[string]float64{"Toxicity": 0.1},
@@ -41,7 +41,7 @@ func TestScanner_Scan(t *testing.T) {
 	})
 
 	t.Run("fails when risk score is above default threshold", func(t *testing.T) {
-		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			resp := apiResponse{
 				IsValid:  false,
 				Scanners: map[string]float64{"Toxicity": 0.85},
@@ -63,7 +63,7 @@ func TestScanner_Scan(t *testing.T) {
 	})
 
 	t.Run("respects custom threshold", func(t *testing.T) {
-		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			resp := apiResponse{
 				IsValid:  true,
 				Scanners: map[string]float64{"Toxicity": 0.3},
@@ -82,7 +82,7 @@ func TestScanner_Scan(t *testing.T) {
 	})
 
 	t.Run("passes when scanner not found in response", func(t *testing.T) {
-		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			resp := apiResponse{
 				IsValid:  true,
 				Scanners: map[string]float64{"OtherScanner": 0.1},
@@ -116,7 +116,7 @@ func TestScanner_Scan(t *testing.T) {
 
 func TestScanner_Redact(t *testing.T) {
 	t.Run("returns sanitized content", func(t *testing.T) {
-		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			resp := apiResponse{
 				SanitizedPrompt: "redacted content",
 				IsValid:         true,
