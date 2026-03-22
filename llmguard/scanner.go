@@ -39,6 +39,11 @@ func NewScanner(client *Client, scannerName string, scannerType guardrails.Scann
 	return s
 }
 
+// Client returns the underlying LLM Guard client.
+func (s *Scanner) Client() *Client {
+	return s.client
+}
+
 // Type returns the scanner type.
 func (s *Scanner) Type() guardrails.ScannerType {
 	return s.scannerType
