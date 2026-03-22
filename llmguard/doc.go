@@ -1,5 +1,5 @@
 // Package llmguard provides an HTTP client and scanner adapter for the
-// LLM Guard API (https://llm-guard.com).
+// LLM Guard API (https://protectai.github.io/llm-guard/).
 //
 // # Client Usage
 //

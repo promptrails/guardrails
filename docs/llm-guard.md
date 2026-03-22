@@ -1,6 +1,6 @@
 # LLM Guard Integration
 
-The `llmguard` sub-package provides an HTTP client and scanner adapter for [LLM Guard](https://llm-guard.com), a Python-based ML scanning service.
+The `llmguard` sub-package provides an HTTP client and scanner adapter for [LLM Guard](https://protectai.github.io/llm-guard/), a Python-based ML scanning service.
 
 While the built-in scanners in `guardrails/scanners` are fast regex-based checks, LLM Guard provides transformer-based scanning with higher accuracy for toxicity, PII (NER), prompt injection, bias, and more.
 
@@ -172,4 +172,4 @@ scanner := llmguard.NewScanner(client, "Bias", guardrails.ScannerToxicity,
 | `Sensitive` | Output | Sensitive information leakage |
 | `Language` | Output | Language validation |
 
-See [LLM Guard docs](https://llm-guard.com) for the full list and configuration options.
+See [LLM Guard docs](https://protectai.github.io/llm-guard/) for the full list and configuration options.

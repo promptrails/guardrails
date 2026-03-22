@@ -54,7 +54,7 @@ go get github.com/promptrails/guardrails
 
 ## LLM Guard Integration
 
-For ML-powered scanning, the `llmguard` sub-package connects to [LLM Guard](https://llm-guard.com):
+For ML-powered scanning, the `llmguard` sub-package connects to [LLM Guard](https://protectai.github.io/llm-guard/):
 
 ```go
 import "github.com/promptrails/guardrails/llmguard"
