@@ -82,7 +82,7 @@ Full docs: [promptrails.github.io/guardrails](https://promptrails.github.io/guar
 
 ## License
 
-MIT — [PromptRails](https://promptrails.com)
+MIT — [PromptRails](https://promptrails.ai)
 
 ## Part of the PromptRails AI Toolkit
 
